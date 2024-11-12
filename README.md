@@ -1,51 +1,48 @@
-# Day 7 - 嵌套式路由、useRouter & useRoute 題目
+## 🌏六角學院每日任務 DAY6
+- useRoute 可以取得路由資訊
+- useRouter 可以對陸游進行操作
 
-請 clone 這一份模板，將 `/pages/room.vue` 改為嵌套式路由，並實作房型列表與房型詳細頁面（不包含動態路由):
+## 🛠️常用指令:
+```
+const route = useRoute();
 
-- 房型列表頁面的 URL 需對應 `/room/`，在此頁面使用 ES6 Fetch 或 axios 串接 [前台房型 API](https://nuxr3.zeabur.app/swagger/#/Rooms%20-%20%E6%88%BF%E5%9E%8B) ，將資料寫入 `roomList` 變數 ，並在模板的 v-for 使用 roomList 渲染資料。
-- 承上，模板的 HTML 、CSS 已有在 `/pages/room.vue` 中提供，需將其移至房型列表頁面並補上 API 串接的 JavaScript 。
-- 房型詳細頁面的 URL 需對應 `/room/_id` ，在此頁顯示 “房型詳細頁面” h2 標題。
-- 房型列表頁面的列表渲染之後，經點擊可以換頁至 `/room/_id` 。
+// 獲取路由中的查詢參數
+// 例如 : 路由路徑為 /product/productA ， route.query 為空物件
+// 例如 : 路由路徑為 /product/productA?q=產品名稱 ， route.query 為 { q:'產品名稱' }
+console.log(route.query);
 
-> 需注意 : `/room/_id` 的 `/_id` 是靜態路由，非動態路由，請建立名稱為 `_id.vue` 的檔案。
+// 獲取包含路由路徑 ( path ) 、查詢參數 ( query ) 和 hash 的完整 URL 
+console.log(route.fullPath);
 
-- 在房型詳細頁面中提供一個「回上一頁」的按鈕，點擊後可以使用 router 方法返回 `/room/` 的房型列表頁面。
-- 確保房型頁面的巢狀路由內容能正確顯示。
+// 獲取路由的唯一名稱 ( name ) ，會以 pages 資料夾結構來命名，以 productA.vue 來說會是  product-productA
+console.log(route.name);
 
-## 安裝
-
-以下將會引導你如何安裝此專案到你的電腦上。
-
-Node.js 版本建議為：`18.0.0` 以上
-
-### 取得專案
-
-```bash
-git clone -b day7-nested-router  https://github.com/jasonlu0525/nuxt3-live-question.git day7-nested-router-question
+```
 ```
 
-### 移動到專案內
+<script setup>
+  const router = useRouter();
+</script>
 
-```bash
-cd  day7-nested-router-question
-```
+<template>
+  <div class="container">
+    <h1>前台首頁</h1>
+    <NuxtLink to="/product/">前往產品列表</NuxtLink>
+  </div>
+  <div class="container">
+    <!-- 在換頁的同時調用 history.pushState() 將 URL /product/productA 加入到瀏覽器的歷史紀錄中  -->
+    <!-- history.pushState() : https://developer.mozilla.org/en-US/docs/Web/API/History/pushState -->
+    <button type="button" @click="router.push('/product/productA')">
+      使用 router.push() 換頁
+    </button>
+    <!-- 在換頁的同時調用 history.replaceState() 將瀏覽器最後一筆的歷史紀錄修改成  /product/productB -->
+    <!--history.replaceState() : https://developer.mozilla.org/zh-CN/docs/Web/API/History/replaceState -->
+    <button type="button" @click="router.replace('/product/productB')">
+      使用 router.replace() 換頁
+    </button>
+    <!-- 在換頁的同時調用 history.go() ，根據傳入的參數在瀏覽器歷史紀錄中移動，傳入 -1 移動到前一頁， 1 則移動到下一頁 -->
+    <button type="button" @click="router.go(1)">使用 router.go(1) 換頁</button>
+  </div>
+</template>
 
-### 安裝套件
-
-```bash
-npm install
-```
-
-### 運行專案
-
-```bash
-npm run dev
-```
-
-### 開啟專案
-
-在瀏覽器網址列輸入以下即可看到畫面
-
-```bash
-http://localhost:3000/
 ```
